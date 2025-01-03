@@ -1,8 +1,23 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Header from "./Header";
+import { checkValidData } from "../utils/validation";
 
 const Login = () => {
   const [isSignInForm, setIsSignInForm] = useState(true);
+  const [errorMessage, setErrorMessage] = useState(null);
+  const email = useRef(null);
+  const passowrd = useRef(null);
+  const name = useRef(null);
+
+  const handleButtonClick = (e) => {
+    e.preventDefault();
+    const message = checkValidData(email.current.value, passowrd.current.value);
+    console.log(message);
+    setErrorMessage(message);
+    console.log(name.current.value);
+    console.log(email.current.value);
+    console.log(passowrd.current.value);
+  };
   const togleSignInForm = () => {
     setIsSignInForm(!isSignInForm);
   };
@@ -23,6 +38,7 @@ const Login = () => {
           </h1>
           {!isSignInForm && (
             <input
+              ref={name}
               type="text"
               placeholder="Full Name"
               className="p-4 my-4 w-full text-sm text-black bg-gray-700"
@@ -30,16 +46,23 @@ const Login = () => {
           )}
 
           <input
+            ref={email}
             type="text"
             placeholder="Email Address"
             className="p-4 my-4 w-full text-sm text-black bg-gray-700"
           />
+
           <input
+            ref={passowrd}
             type="text"
-            placeholder="Email Address"
+            placeholder="passowrd"
             className="p-4 my-4 w-full text-sm text-black bg-gray-700"
           />
-          <button className="p-4 my-4 bg-red-700 text-sm text-white rounded-lg w-full">
+          <p className="text-red-600 text-sm">{errorMessage}</p>
+          <button
+            onClick={handleButtonClick}
+            className="p-4 my-4 bg-red-700 text-sm text-white rounded-lg w-full"
+          >
             {isSignInForm ? "Sign In" : "Sign Up"}
           </button>
           <p className="py-4 text-sm cursor-pointer" onClick={togleSignInForm}>
